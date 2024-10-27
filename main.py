@@ -1,16 +1,11 @@
-# This is a sample Python script.
+from mcts_deck.deck import Deck
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+d = Deck(elements=[1,2,3,4,5,5,3,2,5,7,1,3,5,76,4,2])
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+d.add_element(6)
+d.remove_element(4)
+print(d.probability_distribution())
+drawn, deck = d.draw(3)
+print(drawn, deck.deck_elements)
+print(deck.probability_distribution())
