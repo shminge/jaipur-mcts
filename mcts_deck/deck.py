@@ -8,6 +8,8 @@ class Deck:
     A class to hold any deck-like objected needed for the MCTS. Implements methods for drawing, copying itself, and returning averages
     """
 
+    __slots__ = ('deck_elements', 'distribution')
+
     def __init__(self, elements=None):
         if elements is None:
             elements = []
@@ -21,7 +23,7 @@ class Deck:
         random.shuffle(self.deck_elements)
 
 
-    def draw(self, n) -> Tuple[List, Deck]:
+    def draw(self, n) -> Tuple[Tuple, Deck]:
         """
         Draws n elements from a copy of the deck, and returns the draws in order as well as a reference to the new deck object
         """
@@ -29,7 +31,7 @@ class Deck:
 
         new_deck: Deck = self.dupe_deck()
         new_deck.shuffle()
-        drawn_cards: List = [new_deck.deck_elements.pop() for _ in range(n)]
+        drawn_cards: Tuple = tuple(sorted([new_deck.deck_elements.pop() for _ in range(n)])) # sorts the cards to make sure functionally equivalent draws are the same
 
         return drawn_cards, new_deck #TODO make a slots class return for readability
 
@@ -61,9 +63,9 @@ class Deck:
 
         return distribution
 
-    def inverse_probability(self, draw: List) -> float:
+    def inverse_probability(self, draw: Tuple) -> float:
         """
-        Returns the probability of a specific draw occuring from the deck.
+        Returns the probability of a specific draw occurring from the deck.
         """
         draw_distribution: Counter = self.distribution.copy() # copy the distribution as we want to update counts
         draw_probability: float = 1.0
