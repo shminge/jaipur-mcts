@@ -10,7 +10,11 @@ class JaipurGame:
     __slots__ = ('state_handler')
 
     def __init__(self):
-        self.state_handler = StateHandler(human=HumanPlayer(), agent=Player(), deck=None, market=[self.card_input() for _ in range(3)], tokens=None)
+        self.state_handler = StateHandler(human=HumanPlayer(),
+                                          agent=Player(),
+                                          deck=None,
+                                          market=[self.card_input() for _ in range(3)],
+                                          tokens=None)
 
 
 

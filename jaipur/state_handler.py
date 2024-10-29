@@ -8,11 +8,18 @@ if TYPE_CHECKING:
     from mcts_deck.draw import Draw
     from jaipur.player import Player, HumanPlayer
 
+
 class StateHandler:
 
     __slots__ = ('deck', 'market', 'tokens', 'human_player', 'agent')
 
-    def __init__(self, human: HumanPlayer, agent: Player, deck: Optional[Deck], market: List, tokens: Optional[Tuple[Deck,Deck,Deck]]):
+    def __init__(self,
+                 human: HumanPlayer,
+                 agent: Player,
+                 deck: Optional[Deck],
+                 market: List,
+                 tokens: Optional[Tuple[Deck, Deck, Deck]]
+                 ):
 
         self.human_player = human
         self.agent = agent
