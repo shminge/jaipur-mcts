@@ -4,14 +4,19 @@ from typing import List, Tuple, Optional, TYPE_CHECKING
 
 from mcts_deck.deck import Deck
 from jaipur.cards import Cards
+import jaipur.player as players
 
 if TYPE_CHECKING:
     from mcts_deck.draw import Draw
-    from jaipur.player import Player, HumanPlayer
+
 
 
 
 class JaipurGame:
+    """
+    Should handle the entire game at one state
+    """
+
     __slots__ = ('deck', 'market', 'tokens', 'human_player', 'agent')
 
     def __init__(self,
@@ -67,6 +72,17 @@ class JaipurGame:
         five_tokens = Deck(elements=[8, 8, 9, 10, 10])
 
         self.tokens = (three_tokens, four_tokens, five_tokens)
+
+        self.human_player = players.HumanPlayer(game=self)
+        self.human_player.setup()
+
+        self.agent = players.Player(game=self)
+        self.agent.setup()
+
+        self.deck.update_distribution()
+
+        print(self.agent.hand)
+        print(self.agent.herd)
 
     def __str__(self):
         return f'The market currently contains: {self.market}. \nThe deck has distribution {self.deck.distribution}'
