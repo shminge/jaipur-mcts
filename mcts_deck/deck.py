@@ -12,6 +12,7 @@ class Deck:
         if elements is None:
             elements = []
         self.deck_elements: List = elements
+        self.distribution: Counter = self.probability_distribution()
 
     def dupe_deck(self):
         return Deck(elements=self.deck_elements.copy())
@@ -30,7 +31,7 @@ class Deck:
         new_deck.shuffle()
         drawn_cards: List = [new_deck.deck_elements.pop() for _ in range(n)]
 
-        return drawn_cards, new_deck
+        return drawn_cards, new_deck #TODO make a slots class return for readability
 
 
     def average_element(self) -> float:
@@ -51,7 +52,7 @@ class Deck:
         """
         self.deck_elements.remove(element)
 
-    def probability_distribution(self) -> dict:
+    def probability_distribution(self) -> Counter:
         """
         Returns the probabilities of any specific element being drawn
         """
@@ -59,3 +60,16 @@ class Deck:
         distribution = Counter(self.deck_elements)
 
         return distribution
+
+    def inverse_probability(self, draw: List) -> float:
+        """
+        Returns the probability of a specific draw occuring from the deck.
+        """
+        draw_distribution: Counter = self.distribution.copy() # copy the distribution as we want to update counts
+        draw_probability: float = 1.0
+        for element in draw:
+            element_count = draw_distribution[element]
+            draw_probability *= element_count/draw_distribution.total()
+            draw_distribution[element] -= min(1, element_count) # if there are 0, subtract none
+
+        return draw_probability
