@@ -12,11 +12,12 @@ class Deck:
 
     __slots__ = ('deck_elements', 'distribution')
 
-    def __init__(self, elements=None):
+    def __init__(self, elements=None, shuffle = True):
         if elements is None:
             elements = []
         self.deck_elements: List = elements
-        self.shuffle() # shuffle on initialization
+        if shuffle:
+            self.shuffle() # shuffle on initialization
         self.distribution: Counter = Counter(self.deck_elements)
 
     def dupe_deck(self):

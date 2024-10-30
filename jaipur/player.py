@@ -1,8 +1,10 @@
 from __future__ import annotations
-from typing import List
+from typing import List, TYPE_CHECKING
 import jaipur.jaipur as jaipur
 from jaipur.cards import Cards
 
+if TYPE_CHECKING:
+    from mcts_deck.deck import Deck
 
 class Player:
     """
@@ -27,6 +29,18 @@ class Player:
             self.game.deck.remove_element(card)
 
 
+    def __str__(self):
+        return f'This player has a hand of {self.hand}, {self.herd} camels and {self.points} points'
+
+    def take_bonus(self, value: int) -> None:
+        bonus_stack: Deck = self.game.bonus_tokens[value-3]
+        draw = bonus_stack.draw(1)
+        self.game.bonus_tokens[value-3] = draw.remaining_deck
+        self.points += draw.drawn_cards[0]
+
+
+
+
 
 
 
@@ -47,3 +61,7 @@ class HumanPlayer(Player):
         self.herd = int(input('How many camels did your opponent draw? '))
         for i in range(self.herd):
             self.game.deck.remove_element(Cards.CAMEL)
+        self.unknown_hand = 5 - self.herd
+
+    def take_bonus(self, value: int) -> None:
+        self.unknown_tokens[value - 3] += 1
