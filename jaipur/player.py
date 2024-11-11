@@ -38,6 +38,9 @@ class Player:
         self.game.bonus_tokens[value-3] = draw.remaining_deck
         self.points += draw.drawn_cards[0]
 
+    def score(self):
+        return self.points
+
 
 
 
@@ -65,3 +68,11 @@ class HumanPlayer(Player):
 
     def take_bonus(self, value: int) -> None:
         self.unknown_tokens[value - 3] += 1
+
+    def score(self):
+        sample_score = self.points
+        for i, token_stack in enumerate(self.game.bonus_tokens):
+            token_stack: Deck
+            if self.unknown_tokens[i] > 0:
+                draw = token_stack.draw(self.unknown_tokens[i])
+                sample_score += sum(draw.drawn_cards)

@@ -61,9 +61,33 @@ class CamelAction(Action):
 
 
 class SwapAction(Action):
-    pass
+    """
+    Switch Cards
+    """
+    __slots__ = ('num_camels', 'hand_swap', 'market_swap')
+
+    def __init__(self, num_camels: int, hand_cards: List, market_cards: List):
+        self.num_camels = num_camels
+        self.hand_swap = hand_cards
+        self.market_swap = market_cards
+
+    def perform(self, player: Player, verbose = True):
+        assert self.num_camels <= player.herd, 'Tried to use more camels than available'
+
+        [player.game.market.add_element(Cards.CAMEL) for _ in range(self.num_camels)]
+        player.herd -= self.num_camels
+
+        [(player.game.market.add_element(card), player.hand.remove(card)) for card in self.hand_swap]
+
+        [(player.game.market.remove_element(card), player.hand.append(card)) for card in self.market_swap]
+
+        player.game.market.update_distribution()
+
 
 class SellAction(Action):
+    """
+    Sell cards
+    """
     __slots__ = 'cards'
 
     def __init__(self, cards: List):
