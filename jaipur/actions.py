@@ -95,14 +95,18 @@ class SellAction(Action):
 
     def perform(self, player: Player, verbose = True):
         card_type = self.cards[0]
+        sale_count = len(self.cards)
         assert all(card is card_type for card in self.cards), 'Tried to sell a mix'
 
-        sale_count = len(self.cards)
+        if card_type in [Cards.RED, Cards.YELLOW, Cards.SILVER]:
+            assert sale_count > 1, 'Tried to sell only one luxury'
+
+
 
         for card in self.cards:
             player.hand.remove(card)
             if len(player.game.goods_tokens[card]) > 0:
                 player.points += player.game.goods_tokens[card].pop()
 
-        if sale_count >= 2:
+        if sale_count > 2:
             player.take_bonus(min(5, sale_count))

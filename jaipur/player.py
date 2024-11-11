@@ -76,3 +76,6 @@ class HumanPlayer(Player):
             if self.unknown_tokens[i] > 0:
                 draw = token_stack.draw(self.unknown_tokens[i])
                 sample_score += sum(draw.drawn_cards)
+
+    def __str__(self):
+        return f'This player has a hand of {self.hand}, {self.unknown_hand} unknown cards, {self.herd} camels and {self.points} points'

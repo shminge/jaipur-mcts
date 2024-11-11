@@ -34,7 +34,7 @@ class Deck:
         assert len(self.deck_elements) >= n, f'Tried to draw {n} elements from an {len(self.deck_elements)}-element deck'
 
         new_deck: Deck = self.dupe_deck()
-        if new_deck.deck_elements[0] is int:
+        if type(new_deck.deck_elements[0]) is int:
             drawn_cards: List = sorted([new_deck.deck_elements.pop() for _ in range(n)])
         else:
             drawn_cards: List = sorted([new_deck.deck_elements.pop() for _ in range(n)], key=lambda card: card.value) # sorts the cards to make sure functionally equivalent draws are the same
